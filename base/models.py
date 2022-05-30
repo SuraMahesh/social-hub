@@ -64,7 +64,15 @@ class Skill(models.Model):
 
 
 class Comment(models.Model):
-    pass
+    owner = models.ForeignKey(User, models.CASCADE, blank=True, null=True)
+    post = models.ForeignKey(Post, models.CASCADE, blank=True, null=True)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, null=True)  
+   
+    
+
+    def __str__(self):
+        return self.body[0:50]
 
 # class Like(models.Model):
 #     owner = models.ForeignKey(User, models.CASCADE, blank=True, null=True)
