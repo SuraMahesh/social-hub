@@ -38,11 +38,25 @@ def editPost(request, pk):
     data = request.data
     user = request.user
     post = Post.objects.get(id=pk)
-    post.body = data['body']
-    post.save()
-    serializer = PostSerializer(post, many=False)
-    return Response({'message':'Post was updated', 'data': serializer.data})    
+    if user == post.owner:
+        post.body = data['body']
+        post.save()
 
+        serializer = PostSerializer(post, many=False)
+        return Response({'message':'Post was updated', 'data': serializer.data})  
+
+    else:
+        return Response('User not found')     
+
+@api_view(['DELETE'])
+def deletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    user = request.user
+    if user == post.owner:
+        post.delete()
+        return Response('Post was delete')
+    else:
+        return Response('user not found')
 
 
 @api_view(['GET'])

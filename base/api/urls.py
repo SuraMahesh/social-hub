@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/posts/', views.getPosts),
     path('api/posts/add/', views.addPost),
     path('api/posts/edit/<str:pk>/', views.editPost),
+    path('api/posts/delete/<str:pk>/', views.deletePost),
     path('api/posts/<str:pk>/', views.getPost),
     path('api/users/', views.getUsers),
     path('api/users/recommended', views.getRecommendedUsers),
