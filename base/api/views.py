@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import PostSerializer, ProfileSerializer, CompanySerializer
-from base.models import Post, Profile, Company
+from .serializers import PostSerializer, ProfileSerializer, CompanySerializer, JobSerializer
+from base.models import Post, Profile, Company, JopOpening
 from django.contrib.auth.models import User
 
 
@@ -35,6 +35,13 @@ def getUsers(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def getRecommendedUsers(request):
+    users = Profile.objects.filter(verified=True).order_by('?')
+    serializer = ProfileSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def getUser(request, username):
     user = Profile.objects.get(user__username=username)
     serializer = ProfileSerializer(user, many=False)
@@ -54,6 +61,12 @@ def getCompany(request, pk):
     serializer = CompanySerializer(company, many=False)
     return Response(serializer.data)         
 
+
+@api_view(['GET'])
+def getJobs(request):
+    jobs = JopOpening.objects.all()
+    serializer = JobSerializer(jobs, many=True)
+    return Response(serializer.data)  
 
 
 
