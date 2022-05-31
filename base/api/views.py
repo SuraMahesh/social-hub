@@ -1,7 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import PostSerializer
-from base.models import Post
+from .serializers import PostSerializer, ProfileSerializer
+from base.models import Post, Profile
+from django.contrib.auth.models import User
 
 
 
@@ -18,4 +19,13 @@ def getPosts(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getUsers(request):
+    users = Profile.objects.all()
+    serializer = ProfileSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+
 
