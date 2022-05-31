@@ -1,9 +1,9 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import PostSerializer, ProfileSerializer, CompanySerializer, JobSerializer
 from base.models import Post, Profile, Company, JopOpening
 from django.contrib.auth.models import User
-
 
 
 @api_view(['GET'])
@@ -19,6 +19,30 @@ def getPosts(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addPost(request):
+    data = request.data
+    user = request.user
+    post = Post.objects.create(
+        owner = user,
+        body = data['body']
+    )
+    serializer = PostSerializer(post, many=False)
+    return Response({'message':'Post was added', 'data': serializer.data})
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def editPost(request, pk):
+    data = request.data
+    user = request.user
+    post = Post.objects.get(id=pk)
+    post.body = data['body']
+    post.save()
+    serializer = PostSerializer(post, many=False)
+    return Response({'message':'Post was updated', 'data': serializer.data})    
+
 
 
 @api_view(['GET'])
