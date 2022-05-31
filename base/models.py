@@ -13,7 +13,8 @@ class Company(models.Model):
     website = models.URLField(max_length=200, null=True)
     bio = models.TextField(max_length=500, blank=True, null=True)
     logo = models.ImageField(default='', upload_to='', blank=True, null=True)
-   
+    linkedin = models.CharField(max_length=200, null=True, blank=True)
+    twitter = models.CharField(max_length=200, null=True, blank=True)
 
 
     def __str__(self):
@@ -22,12 +23,12 @@ class Company(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     img = models.ImageField(default='', upload_to='', blank=True, null=True)
-    name = models.CharField(max_length=200, null=True, blank=True, default='TEST')
+    name = models.CharField(max_length=200, null=True, blank=True)
     socials = models.ManyToManyField('Social', blank=True)
     skills = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
-        return self.name
+        return str(self.user.username)
 
 class Review(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

@@ -1,6 +1,6 @@
 from dataclasses import field
 from rest_framework.serializers import ModelSerializer 
-from base.models import Post, Profile
+from base.models import Post, Profile, Company
 from django.contrib.auth.models import User
 
 
@@ -22,3 +22,9 @@ class ProfileSerializer(ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+class CompanySerializer(ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'        
